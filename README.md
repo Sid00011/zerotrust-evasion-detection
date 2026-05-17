@@ -4,8 +4,6 @@
 **Auteur :** Sidali  
 **Date :** Mai 2026
 
-📄 **[Lire le rapport complet (PDF)](./Mezaourou_Sidali_ZeroTrust_Research_2026.pdf)**
-
 ---
 
 ## Question de recherche
