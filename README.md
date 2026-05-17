@@ -19,8 +19,8 @@ d'information ?
 ## Résumé
 
 Le modèle Zero-Trust repose sur trois hypothèses constitutives rarement
-explicitées — intégrité du fournisseur d'identité (IdP), complétude de
-la télémétrie, granularité de la micro-segmentation — que des acteurs
+explicitées - intégrité du fournisseur d'identité (IdP), complétude de
+la télémétrie, granularité de la micro-segmentation - que des acteurs
 sophistiqués exploitent de manière systématique.
 
 Ce rapport analyse quatre vecteurs d'évasion structurels, les cartographie
