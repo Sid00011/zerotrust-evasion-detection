@@ -4,8 +4,6 @@
 **Auteur :** Sidali  
 **Date :** Mai 2026
 
-📄 **[Lire le rapport complet (PDF)](./Sid_Rapport_Recherche_ZeroTrust.pdf)**
-
 ---
 
 ## Question de recherche
