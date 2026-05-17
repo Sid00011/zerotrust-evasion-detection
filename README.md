@@ -34,9 +34,9 @@ maturité originale en huit dimensions.
 
 | Vecteur | Hypothèse | Technique MITRE | Détection typique |
 |---|---|---|---|
-| Abus du fournisseur d'identité (IdP) | H1 — Intégrité IdP | T1556 / .007 / .009 | Logs IdP, ITDR |
-| Angles morts télémétriques | H2 — Télémétrie complète | T1071.004 / T1041 | NDR, UEBA, beaconing |
-| Défauts de micro-segmentation | H3 — Granularité effective | T1021 / T1210 / T1570 | UEBA, graphe d'attaque |
+| Abus du fournisseur d'identité (IdP) | H1 - Intégrité IdP | T1556 / .007 / .009 | Logs IdP, ITDR |
+| Angles morts télémétriques | H2 - Télémétrie complète | T1071.004 / T1041 | NDR, UEBA, beaconing |
+| Défauts de micro-segmentation | H3 - Granularité effective | T1021 / T1210 / T1570 | UEBA, graphe d'attaque |
 | Détournement de jetons de session | H1 + H2 | T1539 / T1550.004 | Déplacement impossible, ASN |
 
 ---
@@ -46,11 +46,11 @@ maturité originale en huit dimensions.
 **Environnement :** VMware Workstation 17 + GNS3, réseau isolé 192.168.56.0/24
 
 **Infrastructure déployée :**
-- Keycloak 24 — Fournisseur d'identité (OIDC + MFA TOTP)
+- Keycloak 24 - Fournisseur d'identité (OIDC + MFA TOTP)
 - Flask + NGINX + oauth2-proxy — Point d'application des politiques (PEP)
-- Stack ELK 8 — SIEM (Elasticsearch, Logstash, Kibana)
-- Kali Linux — Poste attaquant (Mitmproxy, Evilginx2, scripts Python)
-- Windows 11 — Poste victime (Chromium, MFA enrôlé)
+- Stack ELK 8 - SIEM (Elasticsearch, Logstash, Kibana)
+- Kali Linux - Poste attaquant (Mitmproxy, Evilginx2, scripts Python)
+- Windows 11 - Poste victime (Chromium, MFA enrôlé)
 
 **Résultat principal :** Le rejeu de jeton de session (pass-the-cookie)
 ne produit aucune anomalie d'authentification dans une configuration
@@ -87,14 +87,14 @@ ou un audit de conformité NIS2 (article 21).
 
 ## Références principales
 
-- NIST SP 800-207 — Zero Trust Architecture (2020)
-- ANSSI-PA-111 — Le modèle Zero Trust : les fondamentaux (juin 2025)
+- NIST SP 800-207 - Zero Trust Architecture (2020)
+- ANSSI-PA-111 - Le modèle Zero Trust : les fondamentaux (juin 2025)
 - CISA Zero Trust Maturity Model v2.0 (2023)
 - MITRE ATT&CK for Enterprise
 - Verizon DBIR 2025
-- Okta Security — Rapport d'incident (novembre 2023)
-- Basta et al. — arXiv:2111.10967
-- Xavier et al. — arXiv:2209.00943
+- Okta Security - Rapport d'incident (novembre 2023)
+- Basta et al. - arXiv:2111.10967
+- Xavier et al. - arXiv:2209.00943
 
 ---
 
