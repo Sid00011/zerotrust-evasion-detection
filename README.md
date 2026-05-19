@@ -1,105 +1,108 @@
-# Évasion de Détection dans les Environnements Zero-Trust
-### Limites structurelles des architectures actuelles
+# Zero-Trust Evasion Detection
 
-**Auteur :** Sidali  
-**Date :** Mai 2026
+Research study on the structural limits of Zero-Trust architectures as deployed today,
+and how a sophisticated attacker with an initial foothold can bypass detection while
+moving laterally through the system.
 
-📄 **[Lire le rapport complet (PDF)](./Sid_Rapport_Recherche_ZeroTrust.pdf)**
----
-
-## Question de recherche
-
-Quelles sont les limites structurelles des architectures Zero-Trust
-telles qu'elles sont déployées aujourd'hui, et comment un attaquant
-disposant d'un point d'entrée initial peut-il exploiter ces limites
-pour échapper à la détection tout en progressant dans le système
-d'information ?
+[Read the full report (PDF)](https://github.com/Sid00011/zerotrust-evasion-detection/blob/main/Sid_Rapport_Recherche_ZeroTrust.pdf)
 
 ---
 
-## Résumé
+## Research question
 
-Le modèle Zero-Trust repose sur trois hypothèses constitutives rarement
-explicitées - intégrité du fournisseur d'identité (IdP), complétude de
-la télémétrie, granularité de la micro-segmentation - que des acteurs
-sophistiqués exploitent de manière systématique.
-
-Ce rapport analyse quatre vecteurs d'évasion structurels, les cartographie
-dans MITRE ATT&CK, les confronte à des incidents publics documentés
-(Okta 2023, Scattered Spider), et propose une grille d'évaluation de
-maturité originale en huit dimensions.
+What are the structural limits of Zero-Trust architectures as currently deployed,
+and how can an attacker with an initial entry point exploit those limits to evade
+detection while progressing through the information system?
 
 ---
 
-## Les quatre vecteurs analysés
+## Summary
 
-| Vecteur | Hypothèse | Technique MITRE | Détection typique |
+The Zero-Trust model rests on three foundational assumptions that are rarely made
+explicit - identity provider (IdP) integrity, telemetry completeness, and
+micro-segmentation granularity. Sophisticated attackers exploit these assumptions
+systematically.
+
+This study analyzes four structural evasion vectors, maps them to MITRE ATT&CK,
+confronts them against documented public incidents (Okta 2023, Scattered Spider),
+and proposes an original 8-dimension maturity evaluation grid.
+
+---
+
+## Four evasion vectors analyzed
+
+| Vector | Assumption targeted | MITRE technique | Typical detection |
 |---|---|---|---|
-| Abus du fournisseur d'identité (IdP) | H1 - Intégrité IdP | T1556 / .007 / .009 | Logs IdP, ITDR |
-| Angles morts télémétriques | H2 - Télémétrie complète | T1071.004 / T1041 | NDR, UEBA, beaconing |
-| Défauts de micro-segmentation | H3 - Granularité effective | T1021 / T1210 / T1570 | UEBA, graphe d'attaque |
-| Détournement de jetons de session | H1 + H2 | T1539 / T1550.004 | Déplacement impossible, ASN |
+| Identity provider (IdP) abuse | H1 - IdP integrity | T1556 / .007 / .009 | IdP logs, ITDR |
+| Telemetry blind spots | H2 - Complete telemetry | T1071.004 / T1041 | NDR, UEBA, beaconing |
+| Micro-segmentation gaps | H3 - Effective granularity | T1021 / T1210 / T1570 | UEBA, attack graph |
+| Session token hijacking | H1 + H2 | T1539 / T1550.004 | Impossible travel, ASN |
 
 ---
 
-## Scénario expérimental
+## Experimental lab
 
-**Environnement :** VMware Workstation 17 + GNS3, réseau isolé 192.168.56.0/24
+**Environment:** VMware Workstation 17 + GNS3, isolated network 192.168.56.0/24
 
-**Infrastructure déployée :**
-- Keycloak 24 - Fournisseur d'identité (OIDC + MFA TOTP)
-- Flask + NGINX + oauth2-proxy — Point d'application des politiques (PEP)
-- Stack ELK 8 - SIEM (Elasticsearch, Logstash, Kibana)
-- Kali Linux - Poste attaquant (Mitmproxy, Evilginx2, scripts Python)
-- Windows 11 - Poste victime (Chromium, MFA enrôlé)
+| Component | Role |
+|---|---|
+| Keycloak 24 | Identity provider (OIDC + MFA TOTP) |
+| Flask + NGINX + oauth2-proxy | Policy enforcement point (PEP) |
+| ELK Stack 8 | SIEM (Elasticsearch, Logstash, Kibana) |
+| Kali Linux | Attacker machine (Mitmproxy, Evilginx2, Python scripts) |
+| Windows 11 | Victim machine (Chromium, enrolled MFA) |
 
-**Résultat principal :** Le rejeu de jeton de session (pass-the-cookie)
-ne produit aucune anomalie d'authentification dans une configuration
-par défaut. L'attaque est indétectable sans règles de corrélation
-contextuelle explicites portant sur l'adresse IP source, le User-Agent
-et la fréquence d'accès.
+**Main finding:** Session token replay (pass-the-cookie) produces zero authentication
+anomalies in a default Zero-Trust configuration. The attack is undetectable without
+explicit correlation rules targeting source IP, User-Agent, and access frequency.
+This holds even when MFA is enforced - once the session cookie is stolen post-authentication,
+MFA provides no protection.
 
 ---
 
-## Grille de maturité Zero-Trust — contribution originale
+## Original contribution - Zero-Trust maturity grid
 
-Outil d'auto-évaluation en huit dimensions, orienté résistance à
-l'évasion. Complémentaire du CISA Zero Trust Maturity Model v2.0,
-directement utilisable dans une démarche d'homologation ANSSI (BP-028)
-ou un audit de conformité NIS2 (article 21).
+An 8-dimension self-assessment tool focused on evasion resistance. Complements the
+CISA Zero Trust Maturity Model v2.0 and is directly applicable to ANSSI accreditation
+(BP-028) and NIS2 compliance audits (Article 21).
 
-| # | Dimension | Niveau 0 | Niveau 3 (cible) |
+| # | Dimension | Level 0 | Level 3 (target) |
 |---|---|---|---|
-| 1 | Authentification résistante au phishing | Mot de passe + SMS | FIDO2 / passkeys universel |
-| 2 | Liaison jeton / appareil | Cookie classique | DPoP ou mTLS client |
-| 3 | Durée de vie du jeton | ≥ 8 h | ≤ 15 min + rotation |
-| 4 | Couverture télémétrique | Logs périmétrique | SIEM + NDR + UEBA + EDR corrélés |
-| 5 | Détection comportementale C2 | Aucune | Modèles ML beaconing + threat hunting |
-| 6 | Micro-segmentation | VLAN unique | Politique L7 par charge de travail |
-| 7 | Posture de l'appareil | Non vérifiée | Contrôle continu (MDM / EDR) |
-| 8 | ITDR et gouvernance IdP | Aucune | ITDR actif + revue trimestrielle |
+| 1 | Phishing-resistant authentication | Password + SMS | FIDO2 / universal passkeys |
+| 2 | Token-device binding | Standard cookie | DPoP or client mTLS |
+| 3 | Token lifetime | >= 8 hours | <= 15 min + rotation |
+| 4 | Telemetry coverage | Perimeter logs only | SIEM + NDR + UEBA + EDR correlated |
+| 5 | C2 behavioral detection | None | ML beaconing models + threat hunting |
+| 6 | Micro-segmentation | Single VLAN | L7 policy per workload |
+| 7 | Device posture | Not verified | Continuous control (MDM / EDR) |
+| 8 | ITDR and IdP governance | None | Active ITDR + quarterly review |
 
-**Interprétation du score :**
-- Moins de 12/24 → architecture contournable sur au moins un vecteur
-- De 12 à 18/24 → niveau intermédiaire, détection possible mais manuelle
-- De 19 à 24/24 → maturité avancée, contrôles automatisés et testés
+**Score interpretation:**
+
+- Below 12/24 - architecture bypassable on at least one vector
+- 12 to 18/24 - intermediate level, detection possible but manual
+- 19 to 24/24 - advanced maturity, automated and tested controls
 
 ---
 
-## Références principales
+## Key references
 
 - NIST SP 800-207 - Zero Trust Architecture (2020)
-- ANSSI-PA-111 - Le modèle Zero Trust : les fondamentaux (juin 2025)
+- ANSSI-PA-111 - The Zero Trust Model: Fundamentals (June 2025)
 - CISA Zero Trust Maturity Model v2.0 (2023)
 - MITRE ATT&CK for Enterprise
 - Verizon DBIR 2025
-- Okta Security - Rapport d'incident (novembre 2023)
+- Okta Security - Incident Report (November 2023)
 - Basta et al. - arXiv:2111.10967
 - Xavier et al. - arXiv:2209.00943
 
 ---
 
-## Mots-clés
+## Keywords
 
-`zero-trust` `cybersécurité` `MITRE-ATT&CK` `ANSSI` `évasion-détection`
-`session-hijacking` `micro-segmentation` `IdP` `SIEM` `homologation` `NIS2`
+zero-trust · evasion detection · MITRE ATT&CK · session hijacking ·
+micro-segmentation · identity provider · SIEM · ANSSI · NIS2 · pass-the-cookie
+
+---
+
+*Author: Sidali - Cybersecurity Research - May 2026*
